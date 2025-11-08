@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Car | BlueRide Rentals</title>
+<style>
+body { font-family:'Poppins',sans-serif; background:#eef3f9; margin:0; padding:0; }
+header { background:#0039a6; color:white; text-align:center; padding:20px; }
+header h1 { margin:0; }
+main { display:flex; justify-content:center; align-items:flex-start; padding:40px 20px; }
+form { background:white; padding:25px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.1); width:400px; }
+input, select, button { width:100%; padding:10px; margin:10px 0; border-radius:10px; border:1px solid #ccc; }
+button { background:linear-gradient(90deg,#007bff,#00c6ff); color:white; border:none; cursor:pointer; font-weight:600; }
+button:hover { background:#0039a6; }
+label { font-weight:600; }
+</style>
+</head>
+<body>
+
+<header>
+<h1>Book a Car</h1>
+</header>
+
+<main>
+<form id="bookingForm">
+    <label>Select Option:</label>
+    <select id="option" required>
+        <option value="">--Choose--</option>
+        <option value="pay_delivery">Pay Now + Delivery</option>
+        <option value="pickup">Pick Up</option>
+    </select>
+
+    <label>Number of Days:</label>
+    <input type="number" id="days" min="1" value="1" required>
+
+    <div id="deliverySection" style="display:none;">
+        <label>Delivery Location:</label>
+        <input type="text" id="deliveryLocation" placeholder="Enter delivery location">
+    </div>
+
+    <div id="pickupSection" style="display:none;">
+        <label>Pick Up Location:</label>
+        <select id="pickupLocation">
+            <option value="Kahawa West">Kahawa West</option>
+            <option value="Kahawa Sukari">Kahawa Sukari</option>
+            <option value="Githurai">Githurai</option>
+            <option value="Ruiru Town">Ruiru Town</option>
+        </select>
+    </div>
+
+    <p id="total">Total: KES 4500</p>
+
+    <button type="submit">Proceed</button>
+</form>
+</main>
+
+<script>
+const ratePerDay = 4500;
+const deliveryFee = 500;
+
+const optionSelect = document.getElementById('option');
+const deliverySection = document.getElementById('deliverySection');
+const pickupSection = document.getElementById('pickupSection');
+const daysInput = document.getElementById('days');
+const totalText = document.getElementById('total');
+
+function updateTotal() {
+    const days = parseInt(daysInput.value) || 1;
+    let total = days * ratePerDay;
+    if(optionSelect.value === 'pay_delivery') total += deliveryFee;
+    totalText.textContent = `Total: KES ${total.toLocaleString()}`;
+}
+
+optionSelect.addEventListener('change', function(){
+    if(this.value === 'pay_delivery'){
+        deliverySection.style.display='block';
+        pickupSection.style.display='none';
+    } else if(this.value === 'pickup'){
+        deliverySection.style.display='none';
+        pickupSection.style.display='block';
+    } else{
+        deliverySection.style.display='none';
+        pickupSection.style.display='none';
+    }
+    updateTotal();
+});
+
+daysInput.addEventListener('input', updateTotal);
+
+document.getElementById('bookingForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const option = optionSelect.value;
+    const days = parseInt(daysInput.value) || 1;
+    if(option === 'pay_delivery'){
+        const location = document.getElementById('deliveryLocation').value;
+        alert(`✅ Booking confirmed for ${days} day(s). Delivery to ${location}.
+Total including delivery: KES ${((days*ratePerDay)+deliveryFee).toLocaleString()}
+
+Notification sent to 0719752992 / keronoenock@gmail.com`);
+        window.location.href='payment.html';
+    } else if(option === 'pickup'){
+        const pickupLoc = document.getElementById('pickupLocation').value;
+        alert(`✅ Booking confirmed for ${days} day(s). Pick up at ${pickupLoc}.
+Total: KES ${(days*ratePerDay).toLocaleString()}
+
+Notification sent to 0719752992 / keronoenock@gmail.com`);
+        window.location.href='payment.html';
+    } else{
+        alert('Please select a booking option.');
+    }
+});
+</script>
+
+</body>
+</html>

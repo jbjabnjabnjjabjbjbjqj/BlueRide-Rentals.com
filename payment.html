@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment | BlueRide Rentals</title>
+<style>
+body { font-family:'Poppins',sans-serif; background:#eef3f9; text-align:center; padding:40px; }
+.container { background:white; width:420px; margin:0 auto; padding:30px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.1); }
+img { width:350px; border-radius:15px; margin-bottom:15px; }
+input, select, button { width:100%; padding:10px; margin:10px 0; border-radius:10px; border:1px solid #ccc; }
+#total { font-size:1.2rem; color:#007bff; font-weight:600; }
+button { background:linear-gradient(90deg,#007bff,#00c6ff); color:white; border:none; cursor:pointer; font-weight:600; }
+button:hover { background:#0039a6; }
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>Secure Payment</h2>
+<img src="assets/nissan_note.jpg" alt="Nissan Note">
+
+<p><strong>Nissan Note 2017 (Blue)</strong></p>
+
+<label>Number of Days:</label>
+<input type="number" id="days" min="1" value="1">
+
+<label>Delivery Option:</label>
+<select id="option">
+    <option value="pickup">Pick Up</option>
+    <option value="delivery">Delivery (+ KES 500)</option>
+</select>
+
+<label>Payment Method:</label>
+<select id="method" required>
+    <option value="">Choose Payment Method</option>
+    <option value="mpesa">M-Pesa</option>
+    <option value="card">Credit/Debit Card</option>
+</select>
+
+<p id="total">Total: KES 4500</p>
+
+<button id="payBtn">Pay Now</button>
+</div>
+
+<script>
+const ratePerDay = 4500;
+const deliveryFee = 500;
+const daysInput = document.getElementById('days');
+const optionSelect = document.getElementById('option');
+const totalText = document.getElementById('total');
+
+function updateTotal() {
+    const days = parseInt(daysInput.value) || 1;
+    let total = days*ratePerDay;
+    if(optionSelect.value==='delivery') total+=deliveryFee;
+    totalText.textContent=`Total: KES ${total.toLocaleString()}`;
+}
+
+daysInput.addEventListener('input', updateTotal);
+optionSelect.addEventListener('change', updateTotal);
+
+document.getElementById('payBtn').addEventListener('click', function(){
+    const days=parseInt(daysInput.value)||1;
+    const option=optionSelect.value;
+    let total=days*ratePerDay;
+    if(option==='delivery') total+=deliveryFee;
+
+    alert(`✅ Payment of KES ${total.toLocaleString()} received.
+Option: ${option}
+Notification sent to 0719752992 / keronoenock@gmail.com`);
+    window.location.href='index.html';
+});
+</script>
+
+</body>
+</html>
